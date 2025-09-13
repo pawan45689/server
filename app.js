@@ -1,5 +1,6 @@
 import express from "express";
 const app= express();
+import cors from "cors";
 import colors from "colors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -12,9 +13,13 @@ dotenv.config({path:'./config.env'});
 app.use(express.json());
 dotenv.config();
 connectDB();
+app.use(cors({
+  origin: "*"   // ya frontend ka URL: "https://your-frontend.vercel.app"
+}));
 app.use("/api/v1/auth",authrouter);
 app.use("/api/v1/category",categoryRouter)
 app.use("/api/v1/product",productRouter)
+
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () =>{
