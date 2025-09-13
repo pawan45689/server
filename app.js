@@ -16,6 +16,17 @@ connectDB();
 app.use(cors({
   origin: "*"   // ya frontend ka URL: "https://your-frontend.vercel.app"
 }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000", // local frontend
+      "https://frontend-weld-iota-21.vercel.app", // deployed frontend
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 app.use("/api/v1/auth",authrouter);
 app.use("/api/v1/category",categoryRouter)
 app.use("/api/v1/product",productRouter)
