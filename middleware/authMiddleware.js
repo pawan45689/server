@@ -2,10 +2,15 @@ import JWT from "jsonwebtoken";
 import userModel from "../models/usermodel.js";
 export const requireSignIn = async (req, res, next) => {
     try {
-        const decode = JWT.verify(
-            req.headers.authorization,
-            process.env.JWT_SECRET
-        );
+        const token = req.headers.authorization?.split(" ")[1]; // Bearer <token>
+        if (!token) {
+            return res.status(401).send({
+                success: false,
+                message: "No token provided. Please login again.",
+            });
+        }
+
+        const decode = JWT.verify(token, process.env.JWT_SECRET);
         req.user = decode;
         next();
     } catch (err) {
@@ -36,3 +41,4 @@ export const isAdmin = async (req, res, next) => {
         });
     }
 };
+
